@@ -1,5 +1,5 @@
 # Core Django
-Django>=4.2,<5.0
+Django>=5.0
 psycopg2-binary>=2.9.9
 
 # Django REST Framework
@@ -12,3 +12,8 @@ django-cors-headers>=4.3.1
 
 # Environment management
 django-environ>=0.11.2
+
+# Django utils
+django-phonenumber-field==7.0.2
+phonenumbers>=8.13.0
+
