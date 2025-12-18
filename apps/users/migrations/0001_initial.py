@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                 ('password', models.CharField(blank=True, max_length=255, null=True)),
                 ('is_admin', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('role', models.SmallIntegerField(choices=[(1, 'ADMIN'), (2, 'SELLER')], default=2))
             ],
             options={
                 'verbose_name': 'User',
