@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 
-from apps.users.consts import UserRole
+from apps.users import consts
 
 
 class User(AbstractBaseUser):
@@ -28,6 +28,10 @@ class User(AbstractBaseUser):
     )
     created_at = models.DateTimeField(
         auto_now_add=True
+    )
+    role = models.SmallIntegerField(
+        choices=[(role.value, role.name) for role in consts.UserRole],
+        default=consts.UserRole.SELLER.value
     )
 
     USERNAME_FIELD = 'username'
