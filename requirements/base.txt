@@ -1,0 +1,14 @@
+# Core Django
+Django>=4.2,<5.0
+psycopg2-binary>=2.9.9
+
+# Django REST Framework
+djangorestframework>=3.14.0
+djangorestframework-simplejwt>=5.3.0
+drf-spectacular>=0.27.0
+
+# CORS handling
+django-cors-headers>=4.3.1
+
+# Environment management
+django-environ>=0.11.2

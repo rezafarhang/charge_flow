@@ -1,0 +1,4 @@
+-r base.txt
+
+# Testing
+coverage>=7.3.2
