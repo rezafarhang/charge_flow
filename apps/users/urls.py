@@ -1,6 +1,7 @@
 from django.urls import path
 
 from apps.users import views
+
 app_name = 'users'
 
 urlpatterns = [
@@ -18,5 +19,9 @@ urlpatterns = [
         'logout/',
         views.LogoutView.as_view(),
         name='logout'
+    ),
+    path('phone-number/',
+         views.PhoneNumberListCreateView.as_view(),
+         name='phone_number_list_create'
     ),
 ]
