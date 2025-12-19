@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 from apps.users import consts
 
@@ -33,8 +34,6 @@ class User(AbstractBaseUser):
         choices=[(role.value, role.name) for role in consts.UserRole],
         default=consts.UserRole.SELLER.value
     )
-
-    objects = UserManager()
 
     USERNAME_FIELD = 'username'
 
