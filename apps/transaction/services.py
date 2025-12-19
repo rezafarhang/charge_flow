@@ -1,11 +1,11 @@
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.db.models import F
 from django.utils import timezone
 
 from rest_framework import exceptions
 
 from apps.transaction import models, consts
-from apps.users import consts as user_consts
+from apps.users import consts as user_consts, models as users_models
 
 
 class CreditRequestService:
@@ -78,5 +78,69 @@ class CreditRequestService:
                 ).update(
                     balance=F('balance') + trc.amount
                 )
+
+        return trc
+
+
+class ChargeService:
+    @staticmethod
+    def sell_charge(user, phone_number, amount):
+        if amount <= 0:
+            raise exceptions.ValidationError(
+                consts.TransactionErrorConsts.InvalidAmount
+            )
+
+        try:
+            wallet = models.Wallet.objects.get(user=user)
+        except models.Wallet.DoesNotExist:
+            raise exceptions.NotFound(
+                consts.TransactionErrorConsts.WalletNotFound().get_status()
+            )
+
+        try:
+            phone = users_models.PhoneNumber.objects.get(phone_number=phone_number)
+        except users_models.PhoneNumber.DoesNotExist:
+            raise exceptions.NotFound(
+                consts.TransactionErrorConsts.PhoneNumberNotFound().get_status()
+            )
+
+        with transaction.atomic():
+            try:
+                affected = models.Wallet.objects.filter(
+                    id=wallet.id
+                ).update(
+                    balance=F('balance') - amount
+                )
+
+                if affected == 0:
+                    raise exceptions.NotFound(
+                        consts.TransactionErrorConsts.WalletNotFound().get_status()
+                    )
+            except IntegrityError as e:
+                # CHECK constraint violated: balance would be negative
+                if 'wallet_balance_non_negative' in str(e):
+                    raise exceptions.ValidationError(
+                        consts.TransactionErrorConsts.InsufficientBalance().get_status()
+                    )
+                raise exceptions.ValidationError("Something went wrong!")
+
+            # Atomic Update
+            users_models.PhoneNumber.objects.filter(
+                id=phone.id
+            ).update(
+                balance=F('balance') + amount
+            )
+
+            # Create transaction log (WALLET -> PHONE)
+            trc = models.Transaction.objects.create(
+                amount=amount,
+                status=models.TransactionStatus.APPROVED,
+                from_type=models.SourceType.WALLET,
+                from_wallet=wallet,
+                to_type=models.DestType.PHONE,
+                to_phone=phone,
+                updated_at=timezone.now(),
+                updated_by=user
+            )
 
         return trc
