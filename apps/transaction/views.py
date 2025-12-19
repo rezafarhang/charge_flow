@@ -18,16 +18,17 @@ class CreateCreditRequestView(views.APIView):
         return response.Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ApproveCreditRequestView(views.APIView):
+class UpdateCreditRequestView(views.APIView):
     permission_classes = [permissions.IsAuthenticated,]
 
-    def post(self, request):
+    def patch(self, request):
         serializer = serializers.ProcessTransactionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        txn = services.CreditRequestService.approve_credit_request(
+        txn = services.CreditRequestService.update_status_credit_request(
             transaction_id=serializer.validated_data.get('transaction_id'),
-            admin_user=request.user
+            admin_user=request.user,
+            status=serializer.validated_data.get('status'),
         )
         response_serializer = serializers.TransactionSerializer(txn)
         return response.Response(response_serializer.data, status=status.HTTP_200_OK)
