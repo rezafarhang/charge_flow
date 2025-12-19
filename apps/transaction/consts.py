@@ -13,6 +13,11 @@ class TransactionErrorConsts:
         message = 'Wallet not found.'
 
     @status_decorator
+    class PhoneNumberNotFound:
+        code = 3003
+        message = 'Phone number not found.'
+
+    @status_decorator
     class TransactionNotFound:
         code = 3004
         message = 'Transaction not found.'
