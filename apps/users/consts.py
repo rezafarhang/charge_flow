@@ -59,3 +59,10 @@ class LogoutErrorConsts:
     class InvalidToken:
         code = 2002
         message = 'Invalid or expired refresh token.'
+
+
+class PhoneNumberErrorConsts:
+    @status_decorator
+    class NotAllowed:
+        code = 4001
+        message = 'Your not allowed to create this phone number.'
