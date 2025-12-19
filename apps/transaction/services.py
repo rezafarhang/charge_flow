@@ -38,11 +38,6 @@ class CreditRequestService:
 
     @staticmethod
     def update_status_credit_request(transaction_id, admin_user, status):
-        if not admin_user.is_admin and admin_user.role != user_consts.UserRole.ADMIN:
-            raise exceptions.PermissionDenied(
-                consts.TransactionErrorConsts.PermissionDenied().get_status()
-            )
-
         with transaction.atomic():
             # Try to update transaction status from PENDING to APPROVED atomically
             # This ensures only one admin can approve this transaction
