@@ -11,3 +11,23 @@ class TransactionErrorConsts:
     class WalletNotFound:
         code = 3002
         message = 'Wallet not found.'
+
+    @status_decorator
+    class TransactionNotFound:
+        code = 3004
+        message = 'Transaction not found.'
+
+    @status_decorator
+    class AlreadyProcessed:
+        code = 3005
+        message = 'Transaction has already been processed.'
+
+    @status_decorator
+    class InvalidAmount:
+        code = 3006
+        message = 'Amount must be greater than zero.'
+
+    @status_decorator
+    class PermissionDenied:
+        code = 3007
+        message = 'You do not have permission to perform this action.'
