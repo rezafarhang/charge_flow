@@ -1,5 +1,4 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 from apps.users import models as users_models
 
@@ -20,27 +19,6 @@ class Wallet(models.Model):
             models.CheckConstraint(
                 check=models.Q(balance__gte=0),
                 name='wallet_balance_non_negative'
-            ),
-        ]
-
-
-class PhoneNumber(models.Model):
-    phone_number = PhoneNumberField(unique=True, null=True, blank=True)
-    user = models.OneToOneField(
-        to=users_models.User,
-        on_delete=models.CASCADE
-    )
-    balance = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        default=0
-    )
-
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=models.Q(balance__gte=0),
-                name='phone_balance_non_negative'
             ),
         ]
 
@@ -111,7 +89,7 @@ class Transaction(models.Model):
         related_name='received_transactions',
     )
     to_phone = models.ForeignKey(
-        PhoneNumber,
+        users_models.PhoneNumber,
         on_delete=models.DO_NOTHING,
         null=True,
         related_name='received_transactions',
