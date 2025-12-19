@@ -32,5 +32,5 @@ RUN mkdir -p /app/staticfiles /app/media /app/logs
 # Expose port
 EXPOSE 8006
 
-# Run gunicorn
-#CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8006", "--workers", "3", "--timeout", "120"]
+# Run gunicorn with configuration file
+CMD ["gunicorn", "config.wsgi:application", "-c", "gunicorn.conf.py"]
