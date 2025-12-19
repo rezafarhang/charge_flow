@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from phonenumber_field.serializerfields import PhoneNumberField
 
 from apps.transaction import models
 
@@ -75,4 +76,15 @@ class ProcessTransactionSerializer(serializers.Serializer):
     transaction_id = serializers.IntegerField()
     status = serializers.ChoiceField(
         choices=[models.TransactionStatus.APPROVED, models.TransactionStatus.REJECTED,]
+    )
+
+
+class SellChargeSerializer(serializers.Serializer):
+    phone_number = PhoneNumberField(
+        required=True
+    )
+    amount = serializers.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        min_value=0.01
     )
