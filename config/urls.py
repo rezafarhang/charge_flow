@@ -14,6 +14,7 @@ urlpatterns = [
 
     # API v1 endpoints
     path('api/v1/users/', include('apps.users.urls')),
+    path('api/v1/transactions/', include('apps.transaction.urls')),
 ]
 
 # Serve media files in development

@@ -49,3 +49,14 @@ class LogoutView(generics.CreateAPIView):
         return response.Response(
             status=status.HTTP_204_NO_CONTENT
         )
+
+
+class PhoneNumberListCreateView(generics.ListCreateAPIView):
+    serializer_class = serializers.PhoneNumberSerializer
+    permission_classes = [permissions.IsAuthenticated,]
+
+    def get_queryset(self):
+        return models.PhoneNumber.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

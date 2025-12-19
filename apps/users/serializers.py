@@ -2,8 +2,10 @@ from django.contrib.auth.hashers import make_password, check_password
 
 from rest_framework import serializers, exceptions
 from rest_framework_simplejwt.tokens import RefreshToken
+from phonenumber_field.serializerfields import PhoneNumberField
 
 from apps.users import models, consts
+from apps.transaction import models as transaction_models
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -54,6 +56,8 @@ class RegisterSerializer(serializers.Serializer):
             password=make_password(password),
             email_verified=True  # TODO: Add Verify Email Endpoint later
         )
+
+        transaction_models.Wallet.objects.create(user=user)
         refresh = RefreshToken.for_user(user)
 
         return {
@@ -126,3 +130,27 @@ class LogoutSerializer(serializers.Serializer):
             )
 
         return {}
+
+
+class PhoneNumberSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email')
+    phone_number = PhoneNumberField(required=True)
+
+    class Meta:
+        model = models.PhoneNumber
+        fields = ['id', 'phone_number', 'user_email', 'balance']
+        read_only_fields = ['id', 'balance']
+
+    def validate(self, attrs):
+        user = attrs.get('user')
+        if self.context['request'].user.email != user.get('email'):
+            raise exceptions.PermissionDenied(
+                consts.PhoneNumberErrorConsts.NotAllowed().get_status()
+            )
+        if phone_number := attrs.get('phone_number'):
+            if models.PhoneNumber.objects.filter(phone_number=phone_number).exists():
+                raise exceptions.ValidationError(
+                    consts.PhoneNumberErrorConsts.PhoneNumberAlreadyExist().get_status()
+                )
+        # TODO: Send OTP For Strictest Validation
+        return attrs

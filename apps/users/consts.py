@@ -4,8 +4,8 @@ from apps.core.decorators import status_decorator
 
 
 class UserRole(IntEnum):
-    SELLER = 1
-    ADMIN = 2
+    ADMIN = 1
+    SELLER = 2
 
 
 class AuthenticationConsts:
@@ -59,3 +59,15 @@ class LogoutErrorConsts:
     class InvalidToken:
         code = 2002
         message = 'Invalid or expired refresh token.'
+
+
+class PhoneNumberErrorConsts:
+    @status_decorator
+    class NotAllowed:
+        code = 4001
+        message = 'Your not allowed to create this phone number.'
+
+    @status_decorator
+    class PhoneNumberAlreadyExist:
+        code = 4002
+        message = 'Phone number already exists.'
