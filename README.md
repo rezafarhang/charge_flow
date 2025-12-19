@@ -22,6 +22,9 @@ A Django REST API for managing user wallets, credit requests, and mobile charge 
 
 ## Architecture
 
+<img width="1024" height="559" alt="image" src="https://github.com/user-attachments/assets/75465c4d-799c-4fd6-b9b5-baaa3ad01fbe" />
+
+
 **Design Principles:**
 - Serializers for validation only
 - Business logic in Manager/Service classes
