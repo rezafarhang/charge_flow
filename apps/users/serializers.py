@@ -129,3 +129,21 @@ class LogoutSerializer(serializers.Serializer):
             )
 
         return {}
+
+
+class PhoneNumberSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+
+    class Meta:
+        model = models.PhoneNumber
+        fields = ['id', 'phone_number', 'user_email', 'balance']
+        read_only_fields = ['id', 'user_email', 'balance']
+
+    def validate(self, attrs):
+        user_email = attrs.get('user.email')
+        if self.context['request'].user.email != user_email:
+            raise exceptions.PermissionDenied(
+                consts.PhoneNumberErrorConsts.NotAllowed().get_status()
+            )
+        # TODO: Send OTP For Strictest Validation
+        return attrs
