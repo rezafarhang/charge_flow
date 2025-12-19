@@ -35,6 +35,8 @@ class User(AbstractBaseUser):
         default=consts.UserRole.SELLER.value
     )
 
+    objects = UserManager()
+
     USERNAME_FIELD = 'username'
 
     class Meta:
