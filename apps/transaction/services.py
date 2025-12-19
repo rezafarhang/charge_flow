@@ -37,7 +37,7 @@ class CreditRequestService:
         return trc
 
     @staticmethod
-    def approve_credit_request(transaction_id, admin_user):
+    def update_status_credit_request(transaction_id, admin_user, status):
         if not admin_user.is_admin and admin_user.role != user_consts.UserRole.ADMIN:
             raise exceptions.PermissionDenied(
                 consts.TransactionErrorConsts.PermissionDenied().get_status()
@@ -50,7 +50,7 @@ class CreditRequestService:
                 id=transaction_id,
                 status=models.TransactionStatus.PENDING
             ).update(
-                status=models.TransactionStatus.APPROVED,
+                status=status,
                 updated_at=timezone.now(),
                 updated_by=admin_user
             )
@@ -71,12 +71,12 @@ class CreditRequestService:
             # Get the updated transaction
             trc = models.Transaction.objects.get(id=transaction_id)
 
-            # Atomic Update
-            models.Wallet.objects.filter(
-                id=trc.to_wallet_id
-            ).update(
-                balance=F('balance') + trc.amount
-            )
+            if status == models.TransactionStatus.APPROVED:
+                # Atomic Update
+                models.Wallet.objects.filter(
+                    id=trc.to_wallet_id
+                ).update(
+                    balance=F('balance') + trc.amount
+                )
 
         return trc
-
