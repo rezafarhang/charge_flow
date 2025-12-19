@@ -2,6 +2,7 @@ from rest_framework import status, permissions, views, response, generics
 
 from apps.transaction import services, serializers, models
 from apps.throttling import throttles
+from apps.core.permissions import IsAdminUser
 
 
 class WalletBalanceView(generics.RetrieveAPIView):
@@ -30,7 +31,7 @@ class CreateCreditRequestView(views.APIView):
 
 
 class UpdateCreditRequestView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser,]
     throttle_classes = [throttles.TransactionCreateThrottle]
 
     def patch(self, request):
