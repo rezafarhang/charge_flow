@@ -4,8 +4,8 @@ from apps.core.decorators import status_decorator
 
 
 class UserRole(IntEnum):
-    SELLER = 1
-    ADMIN = 2
+    ADMIN = 1
+    SELLER = 2
 
 
 class AuthenticationConsts:
