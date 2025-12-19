@@ -3,6 +3,15 @@ from rest_framework import serializers
 from apps.transaction import models
 
 
+class WalletSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+
+    class Meta:
+        model = models.Wallet
+        fields = ['user_email', 'balance']
+        read_only_fields = fields
+
+
 class CreateCreditRequestSerializer(serializers.Serializer):
     amount = serializers.DecimalField(
         max_digits=12,
