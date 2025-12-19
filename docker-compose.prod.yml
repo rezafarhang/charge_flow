@@ -8,8 +8,6 @@ services:
       POSTGRES_DB: ${DB_NAME:-charge_flow}
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -17,10 +15,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: charge_flow_web
-    command: python manage.py runserver 0.0.0.0:8006
+    container_name: charge_flow_backend
     volumes:
-      - .:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     ports:
