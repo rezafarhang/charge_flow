@@ -26,6 +26,9 @@ FROM dependencies as application
 
 COPY . /app/
 
+# Create necessary directories
+RUN mkdir -p /app/staticfiles /app/media /app/logs
+
 # Expose port
 EXPOSE 8006
 
