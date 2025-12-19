@@ -21,6 +21,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8006
     volumes:
       - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     ports:
       - "8006:8006"
     env_file:
@@ -30,3 +32,5 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:
