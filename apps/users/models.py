@@ -58,3 +58,24 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_admin
+
+
+class PhoneNumber(models.Model):
+    phone_number = PhoneNumberField(unique=True, null=True, blank=True)
+    user = models.OneToOneField(
+        to=User,
+        on_delete=models.CASCADE
+    )
+    balance = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(balance__gte=0),
+                name='phone_balance_non_negative'
+            ),
+        ]
