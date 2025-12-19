@@ -61,3 +61,6 @@ class TransactionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = fields
 
+
+class ProcessTransactionSerializer(serializers.Serializer):
+    transaction_id = serializers.IntegerField()
