@@ -1,6 +1,14 @@
-from rest_framework import status, permissions, views, response
+from rest_framework import status, permissions, views, response, generics
 
 from apps.transaction import services, serializers, consts, models
+
+
+class WalletBalanceView(generics.RetrieveAPIView):
+    serializer_class = serializers.WalletSerializer
+    permission_classes = [permissions.IsAuthenticated,]
+
+    def get_object(self):
+        return models.Wallet.objects.get(user=self.request.user)
 
 
 class CreateCreditRequestView(views.APIView):
