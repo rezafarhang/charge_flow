@@ -66,3 +66,8 @@ class PhoneNumberErrorConsts:
     class NotAllowed:
         code = 4001
         message = 'Your not allowed to create this phone number.'
+
+    @status_decorator
+    class PhoneNumberAlreadyExist:
+        code = 4002
+        message = 'Phone number already exists.'
