@@ -64,3 +64,6 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 class ProcessTransactionSerializer(serializers.Serializer):
     transaction_id = serializers.IntegerField()
+    status = serializers.ChoiceField(
+        choices=[models.TransactionStatus.APPROVED, models.TransactionStatus.REJECTED,]
+    )
