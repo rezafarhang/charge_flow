@@ -31,3 +31,8 @@ class TransactionErrorConsts:
     class PermissionDenied:
         code = 3007
         message = 'You do not have permission to perform this action.'
+
+    @status_decorator
+    class InvalidTransactionStatus:
+        code = 3008
+        message = 'Invalid transaction status for this operation.'
