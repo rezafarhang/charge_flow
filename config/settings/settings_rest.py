@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 import environ
-from config.settings.settings_throttling import THROTTLE_RATES
+from apps.throttling.settings import THROTTLE_RATES
 
 env = environ.Env()
 
