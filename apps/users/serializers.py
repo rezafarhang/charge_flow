@@ -4,6 +4,7 @@ from rest_framework import serializers, exceptions
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.users import models, consts
+from apps.transaction import models as transaction_models
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -54,6 +55,8 @@ class RegisterSerializer(serializers.Serializer):
             password=make_password(password),
             email_verified=True  # TODO: Add Verify Email Endpoint later
         )
+
+        transaction_models.Wallet.objects.create(user=user)
         refresh = RefreshToken.for_user(user)
 
         return {
