@@ -415,11 +415,6 @@ class ConcurrentTransactionTestCase(TransactionTestCase):
             f"Total phone balance mismatch: {total_phone_balance} != {total_sales}"
         )
 
-        print(f"Total sellers: {len(self.sellers)}")
-        print(f"Sales per seller: {sales_per_seller}")
-        print(f"Total sales: {total_sales}")
-        print(f"Total phone balance: {total_phone_balance}")
-
     def test_concurrent_same_seller_sales(self):
         seller = self.sellers[0]
         wallet = self.wallets[0]
@@ -491,12 +486,6 @@ class ConcurrentTransactionTestCase(TransactionTestCase):
             f"More sales than possible: {success_count[0]} > {expected_successful_sales}"
         )
 
-        print(f"Initial balance: {credit_amount}")
-        print(f"Concurrent attempts: {num_concurrent_sales}")
-        print(f"Successful sales: {success_count[0]}")
-        print(f"Expected max sales: {expected_successful_sales}")
-        print(f"Final balance: {wallet.balance}")
-
     def test_concurrent_credit_approvals(self):
         seller = self.sellers[0]
         wallet = self.wallets[0]
@@ -561,8 +550,3 @@ class ConcurrentTransactionTestCase(TransactionTestCase):
         ).count()
 
         self.assertEqual(approved_count, 10)
-
-
-        print(f"Concurrent approval attempts per request: 3")
-        print(f"Successful approvals: {approval_count[0]}")
-        print(f"Final wallet balance: {wallet.balance}")
