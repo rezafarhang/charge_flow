@@ -33,20 +33,6 @@ A Django REST API for managing user wallets, credit requests, and mobile charge 
 
 ## Race Condition Prevention
 
-### Database Isolation Level
-
-PostgreSQL with `ATOMIC_REQUESTS = True` ensures each request runs in a transaction:
-
-```python
-# config/settings/settings_database.py
-DATABASES = {
-    'default': {
-        'ATOMIC_REQUESTS': True,  # Each request is atomic
-        'CONN_MAX_AGE': 600,
-    }
-}
-```
-
 ### Atomic Transactions
 
 All critical operations wrapped in `transaction.atomic()`:
